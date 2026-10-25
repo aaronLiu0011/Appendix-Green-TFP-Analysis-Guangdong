@@ -122,7 +122,7 @@ $$
 \end{aligned}
 $$
 
-Some environmental technologies impose equality on the undesirable-output constraint to represent weak disposability; others use an inequality that permits an independent reduction in bad output. These assumptions define different technologies. The code and the paper must use the same convention.
+Some environmental technologies impose equality on the undesirable-output constraint to represent weak disposability; others use an inequality that permits an independent reduction in bad output. These assumptions define different technologies, so the selected convention must be stated explicitly and applied consistently.
 
 ## 6. Classical Malmquist–Luenberger index
 
