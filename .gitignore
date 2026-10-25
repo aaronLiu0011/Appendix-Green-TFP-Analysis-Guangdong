@@ -1,0 +1,18 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+build/
+dist/
+*.egg-info/
+
+# Empirical material is deliberately excluded from this repository.
+data/
+results/
+appendix/
+paper/
+*.xlsx
+*.xls
+*.dta
+*.sav
+*.pdf
