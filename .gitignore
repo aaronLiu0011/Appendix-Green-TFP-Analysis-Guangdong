@@ -1,12 +1,4 @@
-__pycache__/
-*.py[cod]
-.pytest_cache/
-.venv/
-build/
-dist/
-*.egg-info/
-
-# Empirical material is deliberately excluded from this repository.
+# Empirical and manuscript material is deliberately excluded.
 data/
 results/
 appendix/
