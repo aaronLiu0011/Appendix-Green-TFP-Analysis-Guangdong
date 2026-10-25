@@ -1,15 +1,8 @@
-# Detailed GTFP Measurement Method
+# Theoretical Framework for GTFP Measurement
 
-## 1. Scope and methodological decision
+## 1. Scope
 
-This repository separates two related but non-equivalent measurement systems. The theoretical materials describe an environmental production technology evaluated with a directional distance function (DDF) and a Malmquist–Luenberger (ML) productivity index. The archived MaxDEA summary instead records a non-oriented, maximum-distance-to-frontier slacks-based measure (SBM), super-efficiency, and adjacent-period Malmquist aggregation. The archived calculation should therefore be described as a **super-efficiency SBM Malmquist calculation**, not as an exact implementation of the Chung–Fare–Grosskopf DDF–ML index.
-
-Two defensible publication routes follow from this distinction:
-
-1. **Retain the archived numerical results.** Describe them as CRS super-efficiency SBM Malmquist results and present this repository as an open methodological audit. Do not claim exact numerical replication.
-2. **Re-estimate GTFP with an open method.** Use the global Malmquist–Luenberger (`global-ml`) implementation, then regenerate every descriptive statistic, regional comparison, figure, and regression that uses GTFP.
-
-The second route is the recommended fully open workflow because the global technology produces a common reference set and avoids the cross-period infeasibility that affects the classical four-distance formulation in this panel.
+Green total factor productivity (GTFP) measures changes in production performance after desirable and undesirable outputs are considered jointly. This document presents two closely related theoretical approaches: the directional distance function–Malmquist–Luenberger (DDF–ML) framework and the undesirable-output slacks-based measure (SBM) Malmquist framework. Both belong to data envelopment analysis, but their distance measures have different meanings and must not be substituted for one another.
 
 ## 2. Units of analysis and notation
 
@@ -90,7 +83,7 @@ P_{\mathrm{seq}}^{t}=\mathrm{conv}
 \left(P^{2000}\cup P^{2001}\cup\cdots\cup P^{t}\right).
 $$
 
-The sequential construction prevents the reference frontier from contracting when previously feasible technologies disappear. However, an “adjacent” Malmquist setting only identifies the pair of periods being compared; it does not prove that a sequential reference set was used. The archived MaxDEA summary confirms adjacent-period comparison but does not establish the original frontier mode.
+The sequential construction prevents the reference frontier from contracting when previously feasible technologies disappear. However, an adjacent-period Malmquist index only identifies the pair of periods being compared; it does not by itself imply that a sequential reference set is used.
 
 ### 4.3 Global technology
 
@@ -101,7 +94,7 @@ P^{G}=\mathrm{conv}
 \left(P^{2000}\cup P^{2001}\cup\cdots\cup P^{T}\right).
 $$
 
-Because every observation is evaluated against the same technology, the global index is circular and is less exposed to infeasible cross-period programs. Its technical-change interpretation differs from the contemporaneous four-distance index, so global estimates must be treated as a new empirical specification rather than inserted into tables produced by the archived MaxDEA model.
+Because every observation is evaluated against the same technology, the global index is circular and is less exposed to infeasible cross-period programs. Its technical-change interpretation differs from the contemporaneous four-distance index, so estimates from the two specifications should not be combined without explicit justification.
 
 ## 5. Directional distance function
 
@@ -207,9 +200,7 @@ B\lambda+s^b&=b_o,\\
 \end{aligned}
 $$
 
-The implementation in `src/gtfp_sbm/model.py` applies the Charnes–Cooper transformation and solves the resulting linear program with SciPy/HiGHS.
-
-An ordinary SBM score is bounded by one when the evaluated DMU belongs to its own reference set. The archived MaxDEA scores include values above one, which confirms that super-efficiency was active. Super-efficiency removes an efficient DMU from its own reference set and re-evaluates it, allowing efficient observations to receive scores above one. This procedure is not reproduced by merely adding a label to the ordinary SBM program.
+An ordinary SBM score is bounded by one when the evaluated DMU belongs to its own reference set. In a super-efficiency extension, an efficient DMU is removed from its own reference set and re-evaluated, allowing efficient observations to receive scores above one. Ordinary and super-efficiency SBM scores therefore have different feasible reference sets and interpretations.
 
 ## 8. Four-distance SBM productivity account
 
@@ -246,75 +237,15 @@ $$
 
 The DDF equations use $1+D$, whereas the SBM equations use an efficiency score $S$. The two quantities have different meanings and directions and cannot be substituted for one another.
 
-## 9. Archived MaxDEA specification
+## 9. Empirical procedure
 
-The preserved MaxDEA summary supports the following statements:
+The empirical procedure consists of six stages. First, monetary variables are converted to constant 2000 prices, and capital stock is constructed with the perpetual inventory method. Second, the labor series is smoothed using the stated two-year moving average, while electricity consumption, real GDP, and carbon emissions are assembled in consistent units. Third, the balanced city-level panel is checked for uniqueness, completeness, and strictly positive values. Fourth, the production technology, returns-to-scale assumption, orientation, and treatment of undesirable output are specified consistently. Fifth, the relevant distance or efficiency measures are estimated for each adjacent-period comparison. Finally, GTFP is calculated and decomposed into efficiency change and technical change, with the identity $GTFP=EC\times TC$ used as an internal consistency check.
 
-- model family: envelopment model;
-- sample dimensions: 19 periods and 21 DMUs;
-- variable roles: three inputs and two outputs, with CO2 treated as undesirable;
-- distance type: maximum distance to frontier (SBM);
-- orientation: non-oriented;
-- extension: super-efficiency;
-- productivity comparison: adjacent-period Malmquist;
-- aggregation: multiplicative, geometric mean; and
-- reported decompositions: CRS, VRS, scale effects, and extended components.
+## 10. Interpretation and methodological consistency
 
-These settings identify the archived calculation as a super-efficiency SBM Malmquist application. The summary does not preserve the exact cross-period super-efficiency reference rules, infeasibility conventions, or proof that a sequential frontier was enabled. Consequently, this repository implements transparent open equations but does not claim bit-for-bit equivalence with MaxDEA.
+For both index families, a productivity value above one indicates improvement, a value equal to one indicates no change, and a value below one indicates deterioration. Efficiency change describes movement toward or away from the reference frontier, whereas technical change captures movement of the frontier itself. The selected distance convention, production technology, returns-to-scale assumption, treatment of undesirable output, and reference set must remain consistent throughout estimation and interpretation. In particular, a DDF-based index expressed through $1+D$ is not numerically interchangeable with an SBM index expressed through efficiency score $S$.
 
-## 10. Open implementation choices
-
-| Command | Method | Main advantage | Main limitation | Recommended use |
-| --- | --- | --- | --- | --- |
-| `--method global-ml` | Global DDF–ML | Common technology, circularity, complete open route for this panel | Produces a new empirical specification | Recommended open re-estimation |
-| `--method cfg-ml` | Classical CFG DDF–ML | Closely follows the standard DDF–ML definition | Cross-period distances may be infeasible | Theoretical benchmark |
-| `--method apz-ml` | APZ DDF–ML | Addresses consistency and feasibility weaknesses of classical ML | May still contain invalid transitions | Robustness analysis |
-| `--method sbm-ml` | Ordinary four-distance SBM | Transparent LP and direct equation audit | No MaxDEA super-efficiency clone; cross-period programs may fail | Formula and data-structure audit |
-
-The first three methods use DEAPack. The ordinary SBM route is implemented locally with SciPy/HiGHS.
-
-## 11. Reproducible calculation workflow
-
-1. Standardize city identifiers, years, units, and missing-value codes.
-2. Convert fixed-asset investment and GDP to constant 2000 prices.
-3. Construct capital stock with the perpetual inventory method and record the initialization and depreciation assumptions.
-4. Apply the specified two-year moving average to labor while retaining the base-year observation.
-5. Assemble electricity use, real GDP, and CO2 emissions and verify strict positivity.
-6. Verify that each city-year pair is unique and that adjacent years contain the same DMUs.
-7. Select one model family: DDF–ML, SBM Malmquist, or global ML. Do not mix their names or distance conventions.
-8. Record the frontier mode: contemporaneous, sequential, or global.
-9. Record returns to scale: omit the convexity constraint for CRS and impose $\mathbf{1}^{\prime}\lambda=1$ for VRS.
-10. Solve the required distance programs and preserve the solver status for every observation.
-11. Compute GTFP, EC, and TC and verify the multiplicative identity within a stated numerical tolerance.
-12. Aggregate city-level indices only after confirming that every annual group has the intended number of cities.
-13. Merge the final index into downstream analysis by city and year.
-14. Save the method name, frontier mode, returns-to-scale assumption, package versions, and command used for each run.
-
-## 12. Quality-control checklist
-
-| Check | Acceptance rule |
-| --- | --- |
-| Panel uniqueness | Every city-year pair appears exactly once |
-| Panel balance | The intended cities are present in every period |
-| Numerical validity | All model variables are finite and strictly positive |
-| Transition coverage | Every intended adjacent-period city transition is represented |
-| Decomposition identity | `gtfp` equals `ec * tc` within numerical tolerance |
-| Infeasibility handling | Failed programs retain city, period pair, distance role, and solver status |
-| Annual aggregation | Each annual mean uses a documented and consistent city set |
-| Method metadata | Output records method, reference technology, returns to scale, and version |
-| Paper consistency | Tables, figures, descriptive statistics, and regressions use the same GTFP version |
-
-## 13. Suggested method statements
-
-### 13.1 If the archived MaxDEA results are retained
-
-> Green total factor productivity was estimated under constant returns to scale using a non-oriented super-efficiency slacks-based measure that jointly accounts for input excess, desirable-output shortfall, and undesirable-output excess. Adjacent-period Malmquist indices were formed by multiplicative geometric-mean aggregation and decomposed into efficiency change and technical change. Carbon dioxide emissions were treated as an undesirable output. Because the original MaxDEA project file is unavailable, the archived estimates are retained as software-generated results, while the accompanying open code documents the ordinary SBM equations and alternative open environmental productivity estimators rather than claiming exact numerical replication.
-
-### 13.2 If the study is re-estimated with the open global method
-
-> Green total factor productivity was estimated with a global Malmquist–Luenberger index under constant returns to scale. The environmental production technology contains real capital stock, labor, and electricity consumption as inputs, real GDP as the desirable output, and carbon dioxide emissions as the undesirable output. Directional distance functions expand desirable output and contract undesirable output relative to a common technology constructed from all city-year observations. The resulting productivity index is decomposed into efficiency change and technical change, with values above one indicating improvement. The common global technology ensures circularity and avoids the cross-period infeasibility associated with the classical four-distance formulation.
-
-## 14. References
+## 11. References
 
 - Chung, Y. H., Fare, R., and Grosskopf, S. (1997). Productivity and undesirable outputs: A directional distance function approach. *Journal of Environmental Management*, 51, 229–240.
 - Tone, K. (2001). A slacks-based measure of efficiency in data envelopment analysis. *European Journal of Operational Research*, 130, 498–509.
