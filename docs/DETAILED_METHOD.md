@@ -13,7 +13,7 @@ The second route is the recommended fully open workflow because the global techn
 
 ## 2. Units of analysis and notation
 
-Each prefecture-level city in each year is treated as a decision-making unit (DMU). For city \(i\) in year \(t\), define
+Each prefecture-level city in each year is treated as a decision-making unit (DMU). For city $i$ in year $t$, define
 
 $$
 z_{i,t}=(x_{i,t},y_{i,t},b_{i,t}),
@@ -21,11 +21,11 @@ $$
 
 where
 
-- \(x_{i,t}\in\mathbb{R}_{+}^{N}\) is the input vector;
-- \(y_{i,t}\in\mathbb{R}_{+}^{M}\) is the desirable-output vector; and
-- \(b_{i,t}\in\mathbb{R}_{+}^{I}\) is the undesirable-output vector.
+- $x_{i,t}\in\mathbb{R}_{+}^{N}$ is the input vector;
+- $y_{i,t}\in\mathbb{R}_{+}^{M}$ is the desirable-output vector; and
+- $b_{i,t}\in\mathbb{R}_{+}^{I}$ is the undesirable-output vector.
 
-The Guangdong application uses three inputs (\(N=3\)), one desirable output (\(M=1\)), and one undesirable output (\(I=1\)). The original balanced panel contains 21 cities observed from 2000 through 2018. The first year supplies the base observations, so adjacent-period productivity changes are dated 2001–2018.
+The Guangdong application uses three inputs ($N=3$), one desirable output ($M=1$), and one undesirable output ($I=1$). The original balanced panel contains 21 cities observed from 2000 through 2018. The first year supplies the base observations, so adjacent-period productivity changes are dated 2001–2018.
 
 ## 3. Variable construction
 
@@ -46,7 +46,7 @@ K_{i,t}=(1-\delta)K_{i,t-1}+I_{i,t},
 \qquad \delta=0.096,
 $$
 
-where \(I_{i,t}\) is real fixed-asset investment after price deflation. The original study initializes the series as
+where $I_{i,t}$ is real fixed-asset investment after price deflation. The original study initializes the series as
 
 $$
 K_{i,2000}=\frac{I_{i,2000}}{0.10}.
@@ -62,15 +62,15 @@ Every model variable must be finite and strictly positive. Each city-year pair m
 
 ### 4.1 Contemporaneous technology
 
-The contemporaneous frontier for year \(t\) uses only the DMUs observed in that year. Under constant returns to scale (CRS), the technology is
+The contemporaneous frontier for year $t$ uses only the DMUs observed in that year. Under constant returns to scale (CRS), the technology is
 
 $$
-P^{t}=\left\{(x,y,b):
+P^{t}=\left\lbrace(x,y,b):
 X^{t}\lambda\leq x,
 \quad Y^{t}\lambda\geq y,
 \quad B^{t}\lambda\leq b,
 \quad \lambda\geq0
-\right\}.
+\right\rbrace.
 $$
 
 The reference combination cannot use more input than the evaluated DMU, must produce at least as much desirable output, and cannot produce more undesirable output. CRS does not impose a convexity constraint. Adding
@@ -83,10 +83,10 @@ changes the model to variable returns to scale (VRS). CRS and VRS results have d
 
 ### 4.2 Sequential technology
 
-A sequential technology for year \(t\) pools all observations from the initial period through \(t\):
+A sequential technology for year $t$ pools all observations from the initial period through $t$:
 
 $$
-P_{\mathrm{seq}}^{t}=\operatorname{conv}
+P_{\mathrm{seq}}^{t}=\mathrm{conv}
 \left(P^{2000}\cup P^{2001}\cup\cdots\cup P^{t}\right).
 $$
 
@@ -97,7 +97,7 @@ The sequential construction prevents the reference frontier from contracting whe
 The global technology pools observations from all periods into one common reference set:
 
 $$
-P^{G}=\operatorname{conv}
+P^{G}=\mathrm{conv}
 \left(P^{2000}\cup P^{2001}\cup\cdots\cup P^{T}\right).
 $$
 
@@ -105,18 +105,18 @@ Because every observation is evaluated against the same technology, the global i
 
 ## 5. Directional distance function
 
-The output-oriented environmental DDF expands desirable output and contracts undesirable output while holding inputs fixed. For direction \(g=(g_y,-g_b)\), define
+The output-oriented environmental DDF expands desirable output and contracts undesirable output while holding inputs fixed. For direction $g=(g_y,-g_b)$, define
 
 $$
-\overrightarrow{D}_{0}^{\,r}(x,y,b;g_y,-g_b)
-=\sup\left\{\beta:
+\overrightarrow{D}_{0}^{r}(x,y,b;g_y,-g_b)
+=\sup\left\lbrace\beta:
 (y+\beta g_y,b-\beta g_b)\in P^{r}(x)
-\right\}.
+\right\rbrace.
 $$
 
-The common observation-specific direction \(g=(y,-b)\) asks how far desirable output can be proportionally expanded while undesirable output is proportionally contracted. A value of \(\beta=0\) places the observation on the selected frontier; \(\beta>0\) indicates remaining improvement potential.
+The common observation-specific direction $g=(y,-b)$ asks how far desirable output can be proportionally expanded while undesirable output is proportionally contracted. A value of $\beta=0$ places the observation on the selected frontier; $\beta>0$ indicates remaining improvement potential.
 
-Under CRS and a sequential reference technology through period \(r\), the linear program for observation \(o\) is
+Under CRS and a sequential reference technology through period $r$, the linear program for observation $o$ is
 
 $$
 \begin{aligned}
@@ -135,12 +135,12 @@ Some environmental technologies impose equality on the undesirable-output constr
 
 ### 6.1 Four required distances
 
-For adjacent periods \(t\) and \(t+1\), the classical index requires four distances:
+For adjacent periods $t$ and $t+1$, the classical index requires four distances:
 
-1. \(D^{t}(z_t)\): the period-\(t\) observation against the period-\(t\) frontier;
-2. \(D^{t}(z_{t+1})\): the period-\(t+1\) observation against the period-\(t\) frontier;
-3. \(D^{t+1}(z_t)\): the period-\(t\) observation against the period-\(t+1\) frontier; and
-4. \(D^{t+1}(z_{t+1})\): the period-\(t+1\) observation against the period-\(t+1\) frontier.
+1. $D^{t}(z_t)$: the period-$t$ observation against the period-$t$ frontier;
+2. $D^{t}(z_{t+1})$: the period-$t+1$ observation against the period-$t$ frontier;
+3. $D^{t+1}(z_t)$: the period-$t$ observation against the period-$t+1$ frontier; and
+4. $D^{t+1}(z_{t+1})$: the period-$t+1$ observation against the period-$t+1$ frontier.
 
 The second and third terms are cross-period evaluations and are the most common source of infeasibility.
 
@@ -177,11 +177,11 @@ $$
 ML_{t,t+1}=EC_{t,t+1}\times TC_{t,t+1}.
 $$
 
-Values above one indicate improvement, values equal to one indicate no change, and values below one indicate deterioration. Specifically, \(EC>1\) indicates movement toward the frontier, while \(TC>1\) indicates a favorable movement of the reference technology.
+Values above one indicate improvement, values equal to one indicate no change, and values below one indicate deterioration. Specifically, $EC>1$ indicates movement toward the frontier, while $TC>1$ indicates a favorable movement of the reference technology.
 
 ## 7. Non-oriented undesirable-output SBM
 
-The SBM directly incorporates input excess, desirable-output shortfall, and undesirable-output excess. For evaluated DMU \(o\), the ordinary non-oriented undesirable-output SBM is
+The SBM directly incorporates input excess, desirable-output shortfall, and undesirable-output excess. For evaluated DMU $o$, the ordinary non-oriented undesirable-output SBM is
 
 $$
 \rho_o=\min
@@ -213,7 +213,7 @@ An ordinary SBM score is bounded by one when the evaluated DMU belongs to its ow
 
 ## 8. Four-distance SBM productivity account
 
-Let \(S^{r}(z_s)\) denote an SBM score for observation \(s\) against reference technology \(r\), where a higher score represents better performance. If all four scores are feasible, define
+Let $S^{r}(z_s)$ denote an SBM score for observation $s$ against reference technology $r$, where a higher score represents better performance. If all four scores are feasible, define
 
 $$
 GTFP_{t,t+1}=
@@ -244,7 +244,7 @@ $$
 GTFP_{t,t+1}=EC_{t,t+1}\times TC_{t,t+1}.
 $$
 
-The DDF equations use \(1+D\), whereas the SBM equations use an efficiency score \(S\). The two quantities have different meanings and directions and cannot be substituted for one another.
+The DDF equations use $1+D$, whereas the SBM equations use an efficiency score $S$. The two quantities have different meanings and directions and cannot be substituted for one another.
 
 ## 9. Archived MaxDEA specification
 
@@ -283,7 +283,7 @@ The first three methods use DEAPack. The ordinary SBM route is implemented local
 6. Verify that each city-year pair is unique and that adjacent years contain the same DMUs.
 7. Select one model family: DDF–ML, SBM Malmquist, or global ML. Do not mix their names or distance conventions.
 8. Record the frontier mode: contemporaneous, sequential, or global.
-9. Record returns to scale: omit the convexity constraint for CRS and impose \(\mathbf{1}^{\prime}\lambda=1\) for VRS.
+9. Record returns to scale: omit the convexity constraint for CRS and impose $\mathbf{1}^{\prime}\lambda=1$ for VRS.
 10. Solve the required distance programs and preserve the solver status for every observation.
 11. Compute GTFP, EC, and TC and verify the multiplicative identity within a stated numerical tolerance.
 12. Aggregate city-level indices only after confirming that every annual group has the intended number of cities.
@@ -318,4 +318,3 @@ The first three methods use DEAPack. The ordinary SBM route is implemented local
 
 - Chung, Y. H., Fare, R., and Grosskopf, S. (1997). Productivity and undesirable outputs: A directional distance function approach. *Journal of Environmental Management*, 51, 229–240.
 - Tone, K. (2001). A slacks-based measure of efficiency in data envelopment analysis. *European Journal of Operational Research*, 130, 498–509.
-
